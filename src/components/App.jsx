@@ -1,6 +1,7 @@
 import Search from './Search.js';
 import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
+import exampleVideoData from '../data/exampleVideoData.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -15,25 +16,19 @@ class App extends React.Component {
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
             <div>
-              <h5>
-                <Search video />
-              </h5>
+              <Search />
             </div>
           </div>
         </nav>
         <div className="row">
           <div className="col-md-7">
             <div>
-              <h5>
-                <VideoPlayer />
-              </h5>
+              <VideoPlayer video={exampleVideoData} />
             </div>
           </div>
           <div className="col-md-5">
             <div>
-              <h5>
-                <VideoList />
-              </h5>
+              <VideoList videos={exampleVideoData} />
             </div>
           </div>
         </div>
