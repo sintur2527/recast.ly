@@ -2,6 +2,8 @@ import Search from './Search.js';
 import VideoList from './VideoList.js';
 import VideoPlayer from './VideoPlayer.js';
 import exampleVideoData from '../data/exampleVideoData.js';
+import searchYouTube from '../lib/searchYouTube.js';
+import youtubeApiKey from '../config/youtube.js';
 
 class App extends React.Component {
   constructor(props) {
@@ -10,13 +12,36 @@ class App extends React.Component {
     this.state = {
       videoList: exampleVideoData,
       currentVideo: exampleVideoData[0],
+      search: ''
     };
     this.handleClick = this.handleClick.bind(this);
-  }
 
+    this.handleChange = this.handleChange.bind(this);
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+  // componentDidMount() {
+  //   searchYouTube('options', console.log('test'));
+  // }
   handleClick(video) {
     this.setState({
-      currentVideo: video,
+      currentVideo: video
+    });
+  }
+
+  handleChange(event) {
+    this.setState({
+      search: event.target.value
+    });
+  }
+  handleSubmit(event) {
+    event.preventDefault();
+    this.setState({
+      videoList: searchYouTube({
+        query: this.state.search,
+        max: 5,
+        key: youtubeApiKey
+      })
     });
   }
 
@@ -26,7 +51,10 @@ class App extends React.Component {
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
             <div>
-              <Search />
+              <Search
+                onChange={change => this.handleChange(change)}
+                onSubmit={search => this.handleSubmit(search)}
+              />
             </div>
           </div>
         </nav>
@@ -38,7 +66,10 @@ class App extends React.Component {
           </div>
           <div className="col-md-5">
             <div>
-              <VideoList videos={this.state.videoList} onClick={(video) => this.handleClick(video)}/>
+              <VideoList
+                videos={this.state.videoList}
+                onClick={video => this.handleClick(video)}
+              />
             </div>
           </div>
         </div>
