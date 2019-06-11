@@ -1,3 +1,6 @@
+import searchYouTube from '../lib/searchYouTube.js';
+import youtubeApiKey from '../config/youtube.js';
+
 class Search extends React.Component {
   constructor(props) {
     super(props);
@@ -6,12 +9,23 @@ class Search extends React.Component {
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeDebounced = _.debounce(searchYouTube, 500);
   }
 
   handleChange(event) {
     this.setState({
       search: event.target.value
     });
+    this.handleChangeDebounced(
+      {
+        query: event.target.value,
+        max: 5,
+        key: youtubeApiKey
+      },
+      function(event) {
+        console.log('what do we do here');
+      }
+    );
   }
 
   handleSubmit(event) {

@@ -11,53 +11,21 @@ class App extends React.Component {
 
     this.state = {
       videoList: [],
-      currentVideo: exampleVideoData[0],
-      search: 'hack reactor'
+      currentVideo: exampleVideoData[0]
     };
     this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
-    searchYouTube(
-      {
-        query: this.state.search,
-        max: 5,
-        key: youtubeApiKey
-      },
-      video => {
-        this.setState({
-          videoList: video
-        });
-      }
-    );
+    this.getSearchResults('lil wayne');
   }
+
   handleClick(video) {
     this.setState({
       currentVideo: video
     });
   }
 
-  // handleChange(event) {
-  //   this.setState({
-  //     search: event.target.value
-  //   });
-  // }
-
-  // handleSubmit(event) {
-  //   event.preventDefault();
-  //   searchYouTube(
-  //     {
-  //       query: this.state.search,
-  //       max: 5,
-  //       key: youtubeApiKey
-  //     },
-  //     video => {
-  //       this.setState({
-  //         videoList: video
-  //       });
-  //     }
-  //   );
-  // }
   getSearchResults(searchTerm) {
     searchYouTube(
       {
