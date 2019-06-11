@@ -1,23 +1,21 @@
-import youtubeApiKey from '../config/youtube.js';
-import Search from '../components/Search.js';
-
 var searchYouTube = (options, callback) => {
-  // TODO
-
-  $.get(
-    'https://www.googleapis.com/youtube/v3/search',
-    {
+  $.ajax({
+    url: 'https://www.googleapis.com/youtube/v3/search',
+    type: 'GET',
+    data: {
       part: 'snippet, id',
       q: options.query,
       type: 'video',
+      maxResults: options.max,
       key: options.key
     },
-    function(data) {
-      console.log('this is the data', data.items);
+    success: function(data) {
+      callback(data.items);
+    },
+    error: function(error) {
+      console.log('Error in the get request', error);
     }
-  );
-
-  callback(data);
+  });
 };
 
 export default searchYouTube;

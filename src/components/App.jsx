@@ -10,39 +10,67 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      videoList: exampleVideoData,
+      videoList: [],
       currentVideo: exampleVideoData[0],
-      search: ''
+      search: 'hack reactor'
     };
     this.handleClick = this.handleClick.bind(this);
-
-    this.handleChange = this.handleChange.bind(this);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
-  // componentDidMount() {
-  //   searchYouTube('options', console.log('test'));
-  // }
+
+  componentDidMount() {
+    searchYouTube(
+      {
+        query: this.state.search,
+        max: 5,
+        key: youtubeApiKey
+      },
+      video => {
+        this.setState({
+          videoList: video
+        });
+      }
+    );
+  }
   handleClick(video) {
     this.setState({
       currentVideo: video
     });
   }
 
-  handleChange(event) {
-    this.setState({
-      search: event.target.value
-    });
-  }
-  handleSubmit(event) {
-    event.preventDefault();
-    this.setState({
-      videoList: searchYouTube({
-        query: this.state.search,
+  // handleChange(event) {
+  //   this.setState({
+  //     search: event.target.value
+  //   });
+  // }
+
+  // handleSubmit(event) {
+  //   event.preventDefault();
+  //   searchYouTube(
+  //     {
+  //       query: this.state.search,
+  //       max: 5,
+  //       key: youtubeApiKey
+  //     },
+  //     video => {
+  //       this.setState({
+  //         videoList: video
+  //       });
+  //     }
+  //   );
+  // }
+  getSearchResults(searchTerm) {
+    searchYouTube(
+      {
+        query: searchTerm,
         max: 5,
         key: youtubeApiKey
-      })
-    });
+      },
+      video => {
+        this.setState({
+          videoList: video
+        });
+      }
+    );
   }
 
   render() {
@@ -51,10 +79,7 @@ class App extends React.Component {
         <nav className="navbar">
           <div className="col-md-6 offset-md-3">
             <div>
-              <Search
-                onChange={change => this.handleChange(change)}
-                onSubmit={search => this.handleSubmit(search)}
-              />
+              <Search onSubmit={search => this.getSearchResults(search)} />
             </div>
           </div>
         </nav>
